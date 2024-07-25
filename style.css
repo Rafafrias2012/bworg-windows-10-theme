@@ -1,0 +1,555 @@
+@keyframes windows10 {
+    0% {
+        color: #0078D7;
+    }
+    25% {
+        color: #009688;
+    }
+    50% {
+        color: #FFA500;
+    }
+    75% {
+        color: #D2691E;
+    }
+    100% {
+        color: #0078D7;
+    }
+}
+
+* {
+    font-family: "Segoe UI", sans-serif;
+}
+
+body {
+    margin: 0;
+    overscroll-behavior: none;
+    background-color: #f5f5f5;
+}
+
+#login {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #0078D7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#login_card {
+    width: 300px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #0078D7;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #005A9C;
+}
+
+#error_message {
+    color: red;
+    margin-top: 10px;
+}
+
+#version {
+    position: absolute;
+    color: #666;
+    font-size: 14px;
+    right: 10px;
+    bottom: 10px;
+}
+
+#content {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #0078D7; /* Windows 10 blue */
+    background-image: url(./img/windows_logo.png), url(./img/windows_bg.png); /* Windows logo and background */
+    background-position: top left, center;
+    background-repeat: no-repeat;
+}
+
+/* CHATBAR */
+
+#chatbar_cont {
+    user-select: none;
+    position: absolute;
+    width: 100%;
+    height: 32px;
+    bottom: 0;
+    z-index: 2;
+    background-color: #0078D7; /* Windows 10 blue */
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #0096FF, rgba(0, 0, 0, 0) 20% 100%), linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.05));
+}
+
+#talkcard {
+    font-size: 14px;
+    padding: 3px 10px;
+    bottom: 32px;
+    left: 0;
+    width: calc(100% - 150px);
+    position: fixed;
+    background-color: #FFFFFF; /* White background */
+    border: 1px solid #D3D3D3; /* Light gray border */
+    border-bottom: none;
+    border-radius: 3px 3px 0px 0px;
+}
+
+#talkcard i {
+    position: absolute;
+    float: right;
+    top: 50%;
+    right: 0;
+    transform: translate(-100%, -50%);
+    color: #666666; /* Gray color */
+}
+
+#send_button {
+    display: inline-block;
+    width: 100px;
+    height: 32px;
+    background-color: #0078D7; /* Windows 10 blue */
+}
+
+#send_button:hover {
+    background-color: #005A9C; /* Darker blue on hover */
+}
+
+#send_button:active {
+    background-color: #003366; /* Even darker blue on click */
+}
+
+#send_button span {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 35px;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+#chatbar {
+    position: absolute;
+    top: 3px;
+    font-size: 15px;
+    width: calc(100% - 132px);
+}
+
+#tile {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 27px;
+    height: 30px;
+    background-image: url(./img/windows_tile.png), linear-gradient(to right, #0078D7 7%, rgba(0, 0, 0, 0) 12% 88%), linear-gradient(to bottom, #0078D7 7%, rgba(0, 0, 0, 0) 12% 88%, #0078D7 93% 100%);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #0078D7; /* Windows 10 blue */
+    border: 1px solid #D3D3D3; /* Light gray border */
+}
+
+.nametag {
+    position: absolute;
+    top: 0;
+    border: 1px solid #b3b3b3;
+    padding: 7px;
+    background: #f5f5f5;
+    font-size: 12px;
+    border-radius: 9px;
+    z-index: 2;
+    user-select: none;
+}
+
+.tag {
+    position: absolute;
+    border-style: solid;
+    border-width: 4px 12px 4px 0;
+    border-radius: 9px;
+    border: #b3b3b3 solid 1px;
+    padding: 5px 6px;
+    background: #f5f5f5;
+    transform: translateY(-100%);
+    font-size: 11px;
+    font-weight: bold;
+    color: black;
+    display: none;
+}
+
+.bubble-text {
+    display: none;
+}
+
+.bubble-right::after,
+.bubble-left::after {
+    position: absolute;
+    content: "";
+    width: 22px;
+    height: 14px;
+    top: 12px;
+}
+
+.bubble-right::after {
+    left: -22px;
+    background-image: url(./img/bubble_tail_r.png);
+}
+
+.bubble-top::after,
+.bubble-bottom::after {
+    position: absolute;
+    content: "";
+    width: 28px;
+    height: 22px;
+}
+
+.bubble-top::after {
+    background-image: url(./img/bubble_tail_t.png);
+    left: 110px;
+}
+
+.bubble-bottom::after {
+    background-image: url(./img/bubble_tail_b.png);
+    top: -22px;
+    left: 26px;
+}
+
+.bubble-left::after {
+    right: -22px;
+    background-image: url(./img/bubble_tail_l.png);
+}
+
+.bubble-left,
+.bubble-right,
+.bubble-top,
+.bubble-bottom {
+    position: absolute;
+    background: #f5f5f5;
+    border: 1px solid #b3b3b3;
+    border-radius: 9px;
+    width: 197px;
+    z-index: 2;
+    user-select: text;
+    line-height: 1;
+}
+
+.bubble-left {
+    right: 90%;
+    top: 40px;
+}
+
+.bubble-right {
+    left: 90%;
+    top: 40px;
+}
+
+.bubble-top {
+    bottom: 105%;
+}
+
+.bubble-bottom {
+    top: 100%;
+}
+
+span .bubble_text {
+    position: relative;
+    padding: 12px;
+    font-size: 14px;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 175px;
+    margin: 0px;
+}
+
+.quote {
+    border-left: 3px solid rgba(0, 0, 0, 0.3);
+    padding: 2px 3px;
+}
+
+.usermedia {
+    width: 172px;
+    max-height: 172px;
+    min-height: 50px;
+}
+
+#room_info {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: bold;
+    line-height: 1.25;
+    text-align: right;
+    padding: 7px;
+    font-size: 12px;
+    position: absolute;
+    bottom: 30px;
+    right: 0;
+}
+
+#error_page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0078d7; /* Windows 10 blue color */
+}
+
+.error_message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 32px;
+    background-color: #f5f5f5; /* Windows 10 light gray background */
+    color: #333; /* Windows 10 text color */
+    border: 1px solid #ccc; /* Windows 10 border color */
+    border-radius: 4px; /* Windows 10 border radius */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Windows 10 font */
+    font-size: 16px; /* Windows 10 font size */
+    line-height: 1.5; /* Windows 10 line height */
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 600px;
+    max-height: 100%;
+}
+
+.contextmenu_cont {
+    margin: 0;
+    position: fixed;
+    list-style-type: none;
+    z-index: 3;
+    background-color: #f5f5f5; /* Light grey background */
+    color: #333; /* Dark grey text color */
+    padding: 2px;
+    border: 1px solid #ddd; /* Light grey border */
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1); /* Light shadow */
+    user-select: none;
+    white-space: nowrap;
+    transition: 0.5s;
+}
+
+.cmenu_item,
+.cmenu_disabled {
+    padding: 4px 22px;
+    position: relative;
+    font-size: 12px;
+}
+
+.cmenu_disabled {
+    color: #999; /* Light grey text color for disabled items */
+}
+
+.cmenu_item:hover {
+    background-color: #0078d4; /* Windows 10 blue */
+    color: white;
+    cursor: pointer;
+}
+
+.cmenu_list:after {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    content: '';
+    border-style: solid;
+    width: 0;
+    height: 0;
+    z-index: 4;
+    border-width: 3px 0 3px 3px;
+    border-color: transparent transparent transparent #333; /* Dark grey arrow */
+    right: 6px;
+}
+
+#log_cont,
+.msWindow_cont {
+    position: absolute;
+    box-sizing: border-box;
+    background: #f5f5f5;
+    border: 1px solid #c4c4c4;
+    padding: 0px 5px 5px 5px;
+    border-radius: 4px;
+    z-index: 1;
+}
+
+#log_cont {
+    top: 0;
+    left: 0;
+    width: 350px;
+    max-width: calc(100% - 200px);
+    height: calc(100% - 32px);
+}
+
+.msWindow_cont {
+    z-index: 20;
+    border-radius: 4px;
+}
+
+.msWindow_cont p {
+    user-select: none;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#log_title,
+.msWindow_title {
+    margin: 6px 0px 6px 4px;
+    color: #333;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+#log_body,
+.msWindow_body {
+    background-color: #f5f5f5;
+    box-sizing: border-box;
+    padding: 0px 5px 10px 5px;
+    width: 100%;
+    height: calc(100% - 29px);
+    margin: 0;
+    overflow-y: scroll;
+    word-break: break-word;
+}
+
+.msWindow_body {
+    padding: 10px 15px;
+}
+
+.side img {
+    width: 40px;
+    height: 40px;
+}
+
+.buttonbar {
+    margin-top: 7px;
+}
+
+.msBtn {
+    clear: left;
+    font-size: 13px;
+    padding: 2px 15px;
+    background-color: #f5f5f5;
+    border: 2px outset #f5f5f5;
+    outline: 1px solid #c4c4c4;
+    border-radius: 4px;
+}
+
+.msBtn:active {
+    border-style: inset;
+}
+
+#log_body::-webkit-scrollbar,
+.msWindow_body::-webkit-scrollbar {
+    display: none;
+}
+
+#log_body p {
+    margin: 0;
+    padding: 7px 0px 0px 0px;
+}
+
+.log_close {
+    position: relative;
+    border: none;
+    background-image: url("./img/assets/xpbutton.webp");
+    background-size: 100%;
+    width: 22px;
+    height: 22px;
+    font-size: 19px;
+    top: -2px;
+    padding: 0;
+    color: white;
+    border-radius: 3px;
+    float: right;
+    margin-left: 5px;
+}
+
+.log_close:hover {
+    background-position: 100%;
+}
+
+.log_close i {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#logshow {
+    color: white;
+    font-size: 14px;
+    display: inline-block;
+    margin: 3px 5px;
+}
+
+#logshow img {
+    width: 45px;
+    height: 45px;
+}
+
+#pollyes,
+#pollno {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 15px;
+    border: 1px solid #c4c4c4; /* Windows 10 border color */
+    overflow: hidden;
+    position: relative;
+}
+
+#innerbar_yes,
+#innerbar_no {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    transition: 0.5s;
+}
+
+#pollyes {
+    background-color: #f1f1f1; /* Windows 10 light background color */
+}
+
+#pollno {
+    background-color: #f1f1f1; /* Windows 10 light background color */
+}
+
+#innerbar_yes {
+    background-color: #0078d7; /* Windows 10 blue color */
+}
+
+#innerbar_no {
+    background-color: #d13438; /* Windows 10 red color */
+}
+
+.polltx {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    color: #333; /* Windows 10 text color */
+}
